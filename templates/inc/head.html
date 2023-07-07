@@ -45,9 +45,11 @@
                 <div class="d-inline-flex align-items-center">
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-                        {% if request.user.is_authenticated %}
+                        {% if request.user.is_authenticated%}
+                        <div class="dropdown-menu dropdown-menu-right">
                         <a href="{% url 'account:user_otp' %}" class="dropdown-item" type="button">Profile</a> 
                         <a href="{% url 'account:user_logout' %}" class="dropdown-item" type="button">Logout</a> 
+                        </div>
                         {% else %}
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="{% url 'account:user_otp' %}" class="dropdown-item" type="button">Sign in/ Sign up </a> 

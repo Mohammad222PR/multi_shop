@@ -1,14 +1,28 @@
 {% load static %}
+<html>
 <!-- start nav -->
+<head>
+    <div>
         {% include 'inc/head.html' %}
         {% include 'inc/navbar.html' %}
+    </div>
+</head>
 
-<!-- End nav --->
-        {% block contact %} {% endblock contact %}
+<!-- End nav -->
+
+<body>
+    <div>
+        {% block contact %} {% endblock contact %} 
+    </div>
+</body>
 
 <!-- Start footer -->
 
+<footer>
+    <div>
         {% include 'inc/footer.html' %}
+    </div>
+</footer>
 
-
-<!--End-->
+</html>
+<!--End fooer-->
