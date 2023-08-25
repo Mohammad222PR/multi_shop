@@ -2,6 +2,8 @@ from django.db import models
 
 # Create your models here.
 
+
+
 class Size(models.Model):
     title = models.CharField(max_length=10)
 
@@ -33,10 +35,18 @@ class Product(models.Model):
     description = models.TextField(max_length=1000000)
     price = models.IntegerField()
     discount = models.SmallIntegerField()
-    image = models.ImageField(upload_to='products/')
-    size = models.ManyToManyField(Size, related_name='products', blank=True, null=True)
+    image = models.ImageField(upload_to='products')
+    size = models.ManyToManyField(Size, related_name='product', blank=True, null=True)
     color = models.ManyToManyField(Color, related_name='products',blank=True, null=True)
     product = models.CharField(choices=PRODUCT_TYPE, default='poshak',max_length=200)
 
     def __srt__(self):
         return self.title
+    
+
+class Information(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE ,related_name='informations', null=True, blank=True)
+    text = models.TextField(max_length=100000000000000000, blank=True, null=True)
+
+    def __str__(self):
+        return self.text[:30]

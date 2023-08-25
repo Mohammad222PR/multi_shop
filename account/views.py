@@ -1,11 +1,14 @@
+from typing import Any
+from django import http
 from django.shortcuts import render, redirect, reverse
 from django.views import View
-from account.forms import LoginForm, OtpLoginForm, CheckOtpCodeForm
-from account.models import User, Otp
+from account.forms import LoginForm, OtpLoginForm, CheckOtpCodeForm, AddressCreationForm
+from account.models import *
 from django.contrib.auth import authenticate, login, logout
 import ghasedakpack
 from random import randint
 from uuid import uuid4
+
 # Create your views here.
 
 
@@ -85,6 +88,34 @@ class CheckOtpView(View):
         return render(request,self.template_name, {'form':form})
     
 
+class AddAddressView(View):
+    form_class = AddressCreationForm
+    template_name = 'account/add_address.html'
+
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('/')
+        
+        has_address = Address.objects.filter(user=request.user).exists()
+        if has_address:
+            return redirect('/')  
+            
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+    
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            new_address = form.save(commit=False)
+            new_address.user = request.user
+            new_address.save()
+            return redirect('/')
+           
+        return render(request, self.template_name, {'form': form})
 class LogoutView(View):
     def get(self, request):
         logout(request)
